@@ -3,6 +3,8 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/mneumi/gin-boilerplate/docs"
+	"github.com/mneumi/gin-boilerplate/internal/middleware"
+	"github.com/mneumi/gin-boilerplate/internal/routers/api"
 	v1 "github.com/mneumi/gin-boilerplate/internal/routers/api/v1"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -15,11 +17,13 @@ func NewRouter() *gin.Engine {
 	r.Use(gin.Recovery())
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	r.POST("/auth", api.GetAuth)
 
 	tag := v1.NewTag()
 	article := v1.NewArticle()
 
 	apiv1 := r.Group("/api/v1")
+	apiv1.Use(middleware.JWT())
 	{
 		apiv1.POST("/tags", tag.Create)
 		apiv1.DELETE("/tags/:id", tag.Delete)
