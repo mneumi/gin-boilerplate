@@ -31,6 +31,9 @@ func init() {
 	}
 }
 
+// @title gin-boilerplate
+// @version 1.0
+// @termsOfService github.com/mneumi/gin-boilerplate
 func main() {
 	gin.SetMode(global.ServerSetting.RunMode)
 
